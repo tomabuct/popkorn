@@ -14,15 +14,6 @@
     ytplayer.addEventListener("onStateChange", "onytplayerStateChange");
   }
 
-  function onytplayerStateChange(newState) {
-    console.log(newState);
-    if (newState == 1) 
-      ws.send("play");
-    if (newState == 2)
-      ws.send("pause;" + parseInt(ytplayer.getCurrentTime()));
-    if (newState == 5)
-      ws.send("play");
-  }
 
   var params = { allowScriptAccess: "always" };
   var atts = { id: "myytplayer" };
@@ -30,33 +21,43 @@
                      "ytapiplayer", "425", "356", "8", null, null, params, atts);
 
 
-    // Enable pusher logging - don't include this in production
-    Pusher.log = function(message) {
-      if (window.console && window.console.log) window.console.log(message);
-    };
+  // Enable pusher logging - don't include this in production
+  Pusher.log = function(message) {
+    if (window.console && window.console.log) window.console.log(message);
+  };
 
-    // Flash fallback logging - don't include this in production
-    WEB_SOCKET_DEBUG = true;
+  // Flash fallback logging - don't include this in production
+  WEB_SOCKET_DEBUG = true;
 
-    var pusher = new Pusher('86baf974dd9fd950a9c8');
-    var channel = pusher.subscribe('test_channel');
-    channel.bind('my_event', function(data) {
-      console.log(e.data);
-      // Receives a message.
-      if (e.data == "play") {
-        ytplayer.playVideo();
-      } 
-      if (/pause;/.test(e.data)){
-        thresh = 1.5;
-        split = e.data.split(";");
-        t = parseInt(split[1])
-        if (t > ytplayer.getCurrentTime() + thresh || t < ytplayer.getCurrentTime() - thresh) {
-          ytplayer.seekTo(t);
-        }
-        if (ytplayer.getPlayerState() != 3)
-          ytplayer.pauseVideo();
+  var pusher = new Pusher('86baf974dd9fd950a9c8');
+  channel = pusher.subscribe('private-together');
+  channel.bind('pusher:subscription_error', function(data) {
+    console.log(data)
+  });
+  channel.bind('client-play', function(data) {
+    ytplayer.playVideo();
+  });
+
+  channel.bind('client-pause', function(data) {
+      thresh = 1.5;
+      split = data.time
+      t = parseInt(split[1])
+      if (t > ytplayer.getCurrentTime() + thresh || t < ytplayer.getCurrentTime() - thresh) {
+        ytplayer.seekTo(t);
       }
-    });
+      if (ytplayer.getPlayerState() != 3)
+        ytplayer.pauseVideo();
+  });
+
+  function onytplayerStateChange(newState) {
+    console.log(newState);
+    if (newState == 1) 
+      channel.trigger("client-play", {});
+    if (newState == 2)
+      channel.trigger("client-pause", { time: ytplayer.getCurrentTime() });
+    if (newState == 5)
+      channel.trigger("client-play", {});
+  }
 </script>
 </head>
 <body>

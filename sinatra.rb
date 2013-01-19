@@ -9,11 +9,17 @@ get '/sfuej' do
 #    video_url = params[:video_url] if params[:video_url]
 #    video_id = video_url.split('=', 2)[1]
 #  end
+  if params[:video_url]['youtube.com']
+    type = 'yt'
+  else
+    type = 'vidlink'
+  end
   video_url = params[:video_url] if params[:video_url]
   video_id = video_url.split('=', 2)[1]
   erb :video, :locals => {
     :video_id => video_id,
-    :session_id => params[:session_id]
+    :session_id => params[:session_id],
+    :type => type
   }
 end
 

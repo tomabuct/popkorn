@@ -1,0 +1,91 @@
+<html>
+<head>
+<!-- Import JavaScript Libraries. -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="swfobject.js"></script>
+<script src="http://js.pusher.com/1.12/pusher.min.js" type="text/javascript"></script>
+ <div id="ytapiplayer">
+   You need Flash player 8+ and JavaScript enabled to view this video.
+ </div>
+<script type="text/javascript">
+  function onYouTubePlayerReady(playerId) {
+    ytplayer = document.getElementById("myytplayer");
+    ytplayer.addEventListener("onStateChange", "onytplayerStateChange");
+  }
+
+  var params = { allowScriptAccess: "always" };
+  var atts = { id: "myytplayer" };
+  swfobject.embedSWF("http://www.youtube.com/v/<%= video_id %>?enablejsapi=1&playerapiid=ytplayer&version=3",
+                     "ytapiplayer", "425", "356", "8", null, null, params, atts);
+
+
+  // Enable pusher logging - don't include this in production
+  Pusher.log = function(message) {
+    if (window.console && window.console.log) window.console.log(message);
+  };
+
+  // Flash fallback logging - don't include this in production
+  WEB_SOCKET_DEBUG = true;
+  shit = true;
+
+  var pusher = new Pusher('86baf974dd9fd950a9c8');
+  channel = pusher.subscribe('private-together');
+  channel.bind('pusher:subscription_error', function(data) {
+    console.log(data)
+  });
+  channel.bind('client-play', function(data) {
+    shit = false;
+    ytplayer.playVideo();
+  });
+
+  channel.bind('client-pause', function(data) {
+    shit = false;
+    thresh = 0.5;
+    t = data.time
+    if (t > ytplayer.getCurrentTime() + thresh || t < ytplayer.getCurrentTime() - thresh) {
+      ytplayer.seekTo(t);
+    }
+    if (ytplayer.getPlayerState() != 3)
+      ytplayer.pauseVideo();
+  });
+
+  function onytplayerStateChange(newState) {
+    if (shit == false) {
+      shit = true
+      return
+    }
+
+    console.log(newState);
+    if (newState == 1)
+      channel.trigger("client-play", {});
+    if (newState == 2)
+      channel.trigger("client-pause", { time: ytplayer.getCurrentTime() });
+    if (newState == 5)
+      channel.trigger("client-play", {});
+  }
+</script>
+
+<!-- HTML5 video player -->
+<link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
+<script src="http://vjs.zencdn.net/c/video.js"></script>
+<!-- dropbox chooser -->
+<script type="text/javascript" src="https://www.dropbox.com/static/api/1/dropbox.js" id="dropboxjs" data-app-key="01asumvjw1hu65w"></script>
+</head>
+<body>
+<video id="vid_player" class="video-js vjs-default-skin" controls
+  preload="auto" width="640" height="264" poster="my_video_poster.png"
+  data-setup="{}">
+  <source src="monkey.mp4" type='video/mp4'>
+  <!-- <source src="my_video.webm" type='video/webm'> -->
+</video>
+<input type="dropbox-chooser" name="selected-file" id="db-chooser" data-link-type="direct"/>
+<script type="text/javascript">
+    document.getElementById("db-chooser").addEventListener("DbxChooserSuccess",
+        function(e) {
+            console.log(e.files[0].link);
+            _V_("vid_player").src({ type: "video/mp4", src: e.files[0].link});
+            _V_("vid_player").ready(function(){this.play();});
+        }, false);
+</script>
+</body>
+</html>

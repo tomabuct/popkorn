@@ -1,0 +1,61 @@
+div#header {
+  background: url(/images/header_bg.png) repeat-x;
+  position: fixed;
+  height: 300px;
+  width: 100%;
+  top: 0;
+  left: 0;
+  text-align: center;
+}
+
+div#title {
+  font-family: 'Gotham';
+  font-weight: 900;
+  font-size: 100px;
+  margin-top: 150px;
+  color: white;
+  opacity: 0.95;
+  text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  -webkit-transform: rotate(-4deg);
+  -webkit-transform-origin: top center;
+  margin-bottom: 100px;
+}
+
+body {
+  background: urL(/images/bg.png) center;
+  background-color: #0091f8;
+}
+
+div#url {
+  vertical-align: bottom;
+  text-align: center;
+}
+
+div#url input {
+  font: 20px 'Helvetica Neue';
+  font-weight: 600;
+  color: #333;
+  padding: 10px;
+  outline: 0;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.4);
+  border: 0.4px solid black;
+  border-radius: 6px;
+  height: 50px;
+  width: 500px;
+}
+
+div#title div.text {
+  margin-top: -140px;
+}
+
+img#hang {
+  height: 400px;
+}
+
+img#go {
+  margin-left: 20px;
+  height: 50px;
+  vertical-align: bottom;
+  cursor: pointer;
+}

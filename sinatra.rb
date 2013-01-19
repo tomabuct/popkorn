@@ -2,8 +2,22 @@ require 'sinatra'
 require 'rubygems'
 require 'hmac-sha2'
 
+video_id = ''
+
+get '/sfuej' do
+  if (params[:video_url])
+    video_url = params[:video_url] if params[:video_url] 
+    video_id = video_url.split('=', 2)[1]
+  end
+  erb :video, :locals => { :video_id => video_id  }
+end
+
+post '/sfuej' do
+  erb :video, :locals => { :video_id => video_id  }
+end
+
 get '/' do
-  "Hello World!"
+  erb :index
 end
 
 post '/pusher/auth' do

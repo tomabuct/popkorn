@@ -1,0 +1,26 @@
+<html>
+<head>
+  <title>Popcorn</title>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+  <script type="text/javascript">
+  $(function() {
+    $("#go").click(function() {
+      window.location.href = '/sfuej?video_url=' + $('#video_url_box').val()
+    }) 
+  })
+  </script>
+</head>
+<body>
+<div id="header">
+</div>
+<div id="title">
+<img id="hang" src="/images/hang.png"><br />
+<div class="text">popcorn</div>
+</div>
+<div id="url">
+  <input id="video_url_box" placeholder="YouTube video" type="text">
+  <img src="/images/popcorn.png" id="go">
+</div>
+</body>
+</html>

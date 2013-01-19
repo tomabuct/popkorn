@@ -3,10 +3,11 @@
   <title>Popcorn</title>
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+  <script src="http://js.pusher.com/1.12/pusher.min.js"></script>
   <script type="text/javascript">
   $(function() {
     $("#go").click(function() {
-      window.location.href = '/sfuej?video_url=' + $('#video_url_box').val()
+      window.location.href = '/sfuej?video_url=' + $('#video_url_box').val() + '&session_id=' + (new Date()).getTime();
     }) 
   })
   </script>

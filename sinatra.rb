@@ -5,11 +5,16 @@ require 'hmac-sha2'
 video_id = ''
 
 get '/sfuej' do
-  if (params[:video_url])
-    video_url = params[:video_url] if params[:video_url] 
-    video_id = video_url.split('=', 2)[1]
-  end
-  erb :video, :locals => { :video_id => video_id  }
+#  if (params[:video_url])
+#    video_url = params[:video_url] if params[:video_url]
+#    video_id = video_url.split('=', 2)[1]
+#  end
+  video_url = params[:video_url] if params[:video_url]
+  video_id = video_url.split('=', 2)[1]
+  erb :video, :locals => {
+    :video_id => video_id,
+    :session_id => params[:session_id]
+  }
 end
 
 post '/sfuej' do

@@ -1,10 +1,20 @@
 require 'sinatra'
 require 'rubygems'
 require 'hmac-sha2'
+require 'soundcloud'
 
 get '/sfuej' do
   if !(params[:video_url] && params[:session_id])
     [404, '404: Invalid url']
+  elsif params[:video_url]['soundcloud.com']
+    type = 'sc'
+    video_url = params[:video_url]
+    video_id = video_url.split('.com/', 2)[1]
+    erb :video, :locals => {
+      :video_id => video_id,
+      :session_id => params[:session_id],
+      :type => type
+    }
   else
     if params[:video_url]['youtube.com']
       type = 'yt'

@@ -3,6 +3,10 @@ require 'rubygems'
 require 'hmac-sha2'
 require 'soundcloud'
 
+get '/dropbox' do
+  erb :dropbox
+end
+
 get '/sfuej' do
   if !(params[:video_url] && params[:session_id])
     [404, '404: Invalid url']

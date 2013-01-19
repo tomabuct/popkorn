@@ -3,10 +3,13 @@ body {
 }
 
 iframe#yt_player {
+  display: block;
   margin: 0 auto 0 auto;
 }
 
 div#player_container {
-  margin-top: 300px;
-  text-align: center;
+  margin-top: -25%;
+  position:absolute;
+  top: 50%;
+  width: 100%;
 }

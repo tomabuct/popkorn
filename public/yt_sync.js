@@ -1,10 +1,10 @@
-//////
+// YouTube embed script loader
 var tag = document.createElement('script');
 tag.src = "//www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-//////
+// YouTube video loader 
 var yt_player;
 function onYouTubeIframeAPIReady() {
   yt_player = new YT.Player('yt_player', {
@@ -18,7 +18,7 @@ function onYouTubeIframeAPIReady() {
   });
 }
 
-//////
+// Syncer 
 broadcast = true;
 
 channel.bind('client-play', function(data) {

@@ -1,0 +1,12 @@
+body {
+  background-color: black;
+}
+
+iframe#yt_player {
+  margin: 0 auto 0 auto;
+}
+
+div#player_container {
+  margin-top: 300px;
+  text-align: center;
+}

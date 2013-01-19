@@ -1,6 +1,4 @@
 require 'em-websocket'
-# requires the twitter-stream gem
-require 'twitter/json_stream'
 require 'json'
 
 #

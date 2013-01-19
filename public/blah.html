@@ -40,8 +40,7 @@
 
   channel.bind('client-pause', function(data) {
       thresh = 1.5;
-      split = data.time
-      t = parseInt(split[1])
+      t = data.time
       if (t > ytplayer.getCurrentTime() + thresh || t < ytplayer.getCurrentTime() - thresh) {
         ytplayer.seekTo(t);
       }

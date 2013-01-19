@@ -1,6 +1,6 @@
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" type="text/css" href="css/video_style.css">
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="http://js.pusher.com/1.12/pusher.min.js" type="text/javascript"></script>
@@ -23,7 +23,7 @@
   channel.bind('pusher:subscription_error', function(data) {
     console.log("ERROR: " + data)
   });
-  <% case type when "yt" %>
+  <% if type == "yt" %>
   var video_id = "<%= video_id %>";
   <% end %>
 </script>
@@ -40,23 +40,15 @@
 <body>
 <% case type when "yt" %>
 <!-- YouTube player -->
+<div id="player_container">
 <div id="yt_player">
   You need Flash player 8+ and JavaScript enabled to view this video.
 </div>
 <% when "vidlink" %>
-<!-- <script type="text/javascript" src="https://www.dropbox.com/static/api/1/dropbox.js" id="dropboxjs" data-app-key="01asumvjw1hu65w"></script> -->
 <video id="vid_player" class="video-js vjs-default-skin" controls
-  preload="auto" width="640" height="264" data-setup="{}">
+  preload="auto" width="65%" height="264" data-setup="{}">
   <source src="<%= video_id %>" type="video/mp4">
 </video>
-<!-- <input type="dropbox-chooser" name="selected-file" id="db-chooser" data-link-type="direct"/>
-<script>
-  document.getElementById("db-chooser").addEventListener("DbxChooserSuccess",
-      function(e) {
-          console.log(e.files[0].link);
-          _V_("vid_player").src(e.files[0].link);
-      }, false);
-</script> -->
 <script type="text/javascript" src="html5_vid_sync.js"></script>
 <% end %>
 </body>

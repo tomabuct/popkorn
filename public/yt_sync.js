@@ -8,8 +8,7 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 var yt_player;
 function onYouTubeIframeAPIReady() {
   yt_player = new YT.Player('yt_player', {
-    height: '500',
-    width: '640',
+    width: '65%',
     videoId: video_id,
     enablejsapi: true,
     events: {
@@ -44,8 +43,6 @@ function onYTPlayerStateChange(newState) {
     broadcast = true;
     return;
   }
-
-  console.log(newState);
 
   if (newState == 1)
     channel.trigger("client-play", {});

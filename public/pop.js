@@ -18,59 +18,44 @@ $(document).ready(function() {
         return showError(error);  // Something went wrong.
       }
 
-      var flders = _.filter(entry_stats, 
-        function(e) {return e.isFolder;});
       var Folder = Backbone.Model.extend();
       var FolderList = Backbone.Collection.extend({
         model: Folder
       });
 
       var Folders = new FolderList;
-      Folders.reset(flders);
+      Folders.reset(entry_stats);
 
       var FolderView = Backbone.View.extend({
         tagName: "li",
-        template: _.template("<%= name %>"),
+        template: _.template("<div class='name'><%= name %></div><div class='kind'><%= mimeType %></div>"),
         events: {"click" : "onClick"},
         render: function() {
           this.$el.html(this.template(this.model.toJSON()));
           return this;
         },
         onClick: function() {
-          client.readdir(this.model.get("path"),
-            function(error, entries, dir_stat, entry_stats) {
-              var files = _.filter(entry_stats, 
-                function(e) {
-                  return e.mimeType == "image/jpeg";
-                });
-              $('#pop').hide();
-              var arr = files.slice(0);
-              function processOne() {
-                var item = arr.pop(); 
-                client.makeUrl(item.path,{'download': true}, 
-                  function(error, u) {
-                    $('#galleria').append("<img src='" + u.url + "'>");
-                    if (arr.length <= 0) {
-                      Galleria.loadTheme('galleria/themes/classic/galleria.classic.min.js');
-                      Galleria.configure({
-                        transition: 'fade',
-                        imageCrop: true,
-                        width: 700,
-                        height: 0.5625,
-                        imageTimeout: 70000
-                      });
-                      Galleria.run('#galleria');
-                    } else {
-                      processOne();
-                    }
+          if (this.model.get("isFolder")) {
+            var ths = this;
+            client.readdir(this.model.get("path"),
+              function(error, entries, dir_stat, entry_stats) {
+                var curr_path = ths.model.get("path");
+                $("#current").html(curr_path);
+                var stripped = curr_path.substr(0, curr_path.length - 1);
+                var split_path = stripped.split("/");
+                var prev_path = stripped.replace(split_path[split_path.length - 1], "");
+                var up_folder = new Folder(
+                  {
+                    "name": "..", 
+                    "mimeType": "inode/directory",
+                    "path": prev_path,
+                    "isFolder": true
                   });
-              
-              }
-              if (arr.length > 0) {
-                processOne();
-              } 
-            });
-        }
+                entry_stats.unshift(up_folder);
+                Folders.reset(entry_stats);
+              });
+          }
+        },
       });
 
       var AppView = Backbone.View.extend({
@@ -94,6 +79,44 @@ $(document).ready(function() {
       var pusher = new Pusher('86baf974dd9fd950a9c8');
       channel = pusher.subscribe('private-together');
       var sent = false;
+
+      function onSelect(e) {
+        client.readdir($("#current").html(),
+          function(error, entries, dir_stat, entry_stats) {
+            var files = _.filter(entry_stats, 
+              function(e) {
+                return e.mimeType == "image/jpeg";
+              });
+            $('#pop').hide();
+            var arr = files.slice(0);
+            function processOne() {
+              var item = arr.pop(); 
+              client.makeUrl(item.path,{'download': true}, 
+                function(error, u) {
+                  $('#galleria').append("<img src='" + u.url + "'>");
+                  if (arr.length <= 0) {
+                    Galleria.loadTheme('galleria/themes/classic/galleria.classic.min.js');
+                    Galleria.configure({
+                      transition: 'fade',
+                      imageCrop: true,
+                      width: 700,
+                      height: 0.5625,
+                      imageTimeout: 70000
+                    });
+                    Galleria.run('#galleria');
+                  } else {
+                    processOne();
+                  }
+                });
+            
+            }
+            if (arr.length > 0) {
+              processOne();
+            } 
+          });
+      }
+
+        $(".button").click(onSelect);
 
       Galleria.ready(function() {
         var ths = this;

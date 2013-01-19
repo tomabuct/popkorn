@@ -5,7 +5,22 @@
 <script type="text/javascript" src="swfobject.js"></script>
 <script type="text/javascript" src="web_socket.js"></script>
 
+<script type="text/javascript" src="swfobject.js"></script>    
+ <div id="ytapiplayer">
+   You need Flash player 8+ and JavaScript enabled to view this video.
+ </div>
 <script type="text/javascript">
+
+  function onYouTubePlayerReady(playerId) {
+    ytplayer = document.getElementById("myytplayer");
+    ytplayer.addEventListener("onStateChange", "onytplayerStateChange");
+  }
+
+  var params = { allowScriptAccess: "always" };
+  var atts = { id: "myytplayer" };
+  swfobject.embedSWF("http://www.youtube.com/v/ZPPdetZTOx0?enablejsapi=1&playerapiid=ytplayer&version=3",
+                     "ytapiplayer", "425", "356", "8", null, null, params, atts);
+
 
   // Let the library know where WebSocketMain.swf is:
   WEB_SOCKET_SWF_LOCATION = "WebSocketMain.swf";
@@ -16,8 +31,8 @@
   };
   ws.onmessage = function(e) {
     // Receives a message.
-    if (e.data == "down") {
-      $("#thing").css("color", "red");
+    if (e.data == "play") {
+      ytplayer.playVideo();
     } else {
       $("#thing").css("color", "");
     }
@@ -32,7 +47,7 @@
 <script type="text/javascript">
 $(function() {
   $("#thing").mousedown(function() {
-    ws.send("down");
+    ws.send("play");
   })
 
   $("#thing").mouseup(function() {

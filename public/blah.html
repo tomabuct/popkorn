@@ -8,12 +8,10 @@
    You need Flash player 8+ and JavaScript enabled to view this video.
  </div>
 <script type="text/javascript">
-
   function onYouTubePlayerReady(playerId) {
     ytplayer = document.getElementById("myytplayer");
     ytplayer.addEventListener("onStateChange", "onytplayerStateChange");
   }
-
 
   var params = { allowScriptAccess: "always" };
   var atts = { id: "myytplayer" };
@@ -28,6 +26,7 @@
 
   // Flash fallback logging - don't include this in production
   WEB_SOCKET_DEBUG = true;
+  shit = true;
 
   var pusher = new Pusher('86baf974dd9fd950a9c8');
   channel = pusher.subscribe('private-together');
@@ -35,22 +34,27 @@
     console.log(data)
   });
   channel.bind('client-play', function(data) {
+    shit = false;
     ytplayer.playVideo();
   });
 
   channel.bind('client-pause', function(data) {
-      thresh = 1.5;
-      split = data.time
-      t = parseInt(split[1])
-      if (t > ytplayer.getCurrentTime() + thresh || t < ytplayer.getCurrentTime() - thresh) {
-        ytplayer.seekTo(t);
-      }
-      if (ytplayer.getPlayerState() != 3)
-        ytplayer.pauseVideo();
+    shit = false;
+    thresh = 0.5;
+    t = data.time
+    if (t > ytplayer.getCurrentTime() + thresh || t < ytplayer.getCurrentTime() - thresh) {
+      ytplayer.seekTo(t);
+    }
+    if (ytplayer.getPlayerState() != 3)
+      ytplayer.pauseVideo();
   });
 
   function onytplayerStateChange(newState) {
-    console.log(newState);
+    if (shit == false) {
+      shit = true
+      return
+    }
+
     if (newState == 1) 
       channel.trigger("client-play", {});
     if (newState == 2)

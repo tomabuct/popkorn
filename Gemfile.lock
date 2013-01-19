@@ -8,6 +8,7 @@ GEM
     eventmachine (1.0.0)
     json (1.7.6)
     rack (1.4.4)
+    ruby-hmac (0.4.0)
     sinatra (1.1.0)
       rack (~> 1.1)
       tilt (~> 1.1)
@@ -19,4 +20,5 @@ PLATFORMS
 DEPENDENCIES
   em-websocket
   json
+  ruby-hmac
   sinatra (= 1.1.0)

@@ -48,7 +48,7 @@ $(document).ready(function() {
                     $('#galleria').append("<img src='" + u.url + "'>");
                     i++;
                     if (i == files.length) {
-                      Galleria.loadTheme('themes/classic/galleria.classic.min.js');
+                      Galleria.loadTheme('galleria/themes/classic/galleria.classic.min.js');
                       Galleria.configure({
                         transition: 'fade',
                         imageCrop: true,

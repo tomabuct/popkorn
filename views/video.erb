@@ -7,7 +7,8 @@
   /* PUSHER */
   // Enable pusher logging - don't include this in production
   Pusher.log = function(message) {
-    if (window.console && window.console.log) window.console.log(message);
+    if (window.console && window.console.log)
+      window.console.log(message);
   };
 
   // Flash fallback logging - don't include this in production
@@ -15,102 +16,38 @@
 </script>
 
 <script type="text/javascript">
-  var tag = document.createElement('script');
-  tag.src = "//www.youtube.com/iframe_api";
-  var firstScriptTag = document.getElementsByTagName('script')[0];
-  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-</script>
-
-<script>
-  var yt_player;
-  function onYouTubeIframeAPIReady() {
-    yt_player = new YT.Player('yt_player', {
-      height: '500',
-      width: '640',
-      videoId: '<%= video_id %>',
-      enablejsapi: true,
-      events: {
-        'onStateChange': onYTPlayerStateChange
-      }
-    });
-  }
-</script>
-
-<script type="text/javascript">
-  broadcast = true;
-
   var pusher = new Pusher('86baf974dd9fd950a9c8');
-  channel = pusher.subscribe('private-'+<%=session_id%>);
+  var channel = pusher.subscribe('private-'+<%=session_id%>);
   channel.bind('pusher:subscription_error', function(data) {
     console.log("ERROR: " + data)
   });
-
-  channel.bind('client-play', function(data) {
-    broadcast = false;
-
-    yt_player.playVideo();
-  });
-
-  channel.bind('client-pause', function(data) {
-    broadcast = false;
-
-    thresh = 0.5;
-    t = data.time
-    if (t > yt_player.getCurrentTime() + thresh || t < yt_player.getCurrentTime() - thresh) {
-      yt_player.seekTo(t);
-    }
-    if (yt_player.getPlayerState() != 3)
-      yt_player.pauseVideo();
-  });
-
-  function onYTPlayerStateChange(newState) {
-    newState = newState.data
-
-    if (broadcast == false) {
-      broadcast = true
-      return
-    }
-
-    console.log(newState);
-
-    if (newState == 1)
-      channel.trigger("client-play", {});
-    if (newState == 2)
-      channel.trigger("client-pause", { time: yt_player.getCurrentTime() });
-    if (newState == 5)
-      channel.trigger("client-play", {});
-  }
+  <% case type when "yt" %>
+  var video_id = "<%= video_id %>";
+  <% when "vidlink" %>
+  var video_url = "<%= video_id %>";
+  <% end %>
 </script>
 
+<% case type when "yt" %>
+<script type="text/javascript" src="yt_sync.js"></script>
+<% when "vidlink" %>
 <!-- HTML5 video player -->
 <link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
 <script src="http://vjs.zencdn.net/c/video.js"></script>
-<!-- dropbox chooser -->
-<script type="text/javascript" src="https://www.dropbox.com/static/api/1/dropbox.js" id="dropboxjs" data-app-key="01asumvjw1hu65w"></script>
+<% end %>
 </head>
 
 <body>
+<% case type when "yt" %>
 <!-- YouTube player -->
 <div id="yt_player">
   You need Flash player 8+ and JavaScript enabled to view this video.
 </div>
-
-<!-- Dropbox player OFF -->
-<!--
+<% when "vidlink" %>
 <video id="vid_player" class="video-js vjs-default-skin" controls
-  preload="auto" width="640" height="264" poster="my_video_poster.png"
-  data-setup="{}">
-  <source src="monkey.mp4" type='video/mp4'>
+  preload="auto" width="640" height="264" data-setup="{}">
 </video>
-<input type="dropbox-chooser" name="selected-file" id="db-chooser" data-link-type="direct"/>
-<script type="text/javascript">
-    document.getElementById("db-chooser").addEventListener("DbxChooserSuccess",
-        function(e) {
-            console.log(e.files[0].link);
-            _V_("vid_player").src({ type: "video/mp4", src: e.files[0].link});
-            _V_("vid_player").ready(function(){this.play();});
-        }, false);
-</script>
--->
+<script type="text/javascript" src="html5_vid_sync.js"></script>
+<% end %>
 </body>
 </html>

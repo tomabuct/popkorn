@@ -40,14 +40,14 @@ $(document).ready(function() {
                 function(e) {
                   return e.mimeType == "image/jpeg";
                 });
-              var i = 0;
               $('#pop').hide();
-              _.each(files, function(f) {
-                client.makeUrl(f.path,{'download': true}, 
+              var arr = files.slice(0);
+              function processOne() {
+                var item = arr.pop(); 
+                client.makeUrl(item.path,{'download': true}, 
                   function(error, u) {
                     $('#galleria').append("<img src='" + u.url + "'>");
-                    i++;
-                    if (i == files.length) {
+                    if (arr.length <= 0) {
                       Galleria.loadTheme('galleria/themes/classic/galleria.classic.min.js');
                       Galleria.configure({
                         transition: 'fade',
@@ -57,10 +57,15 @@ $(document).ready(function() {
                         imageTimeout: 70000
                       });
                       Galleria.run('#galleria');
+                    } else {
+                      processOne();
                     }
                   });
-              });
               
+              }
+              if (arr.length > 0) {
+                processOne();
+              } 
             });
         }
       });

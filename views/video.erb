@@ -1,24 +1,10 @@
 <html>
 <head>
-<!-- Import JavaScript Libraries. -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script type="text/javascript" src="swfobject.js"></script>
 <script src="http://js.pusher.com/1.12/pusher.min.js" type="text/javascript"></script>
- <div id="ytapiplayer">
-   You need Flash player 8+ and JavaScript enabled to view this video.
- </div>
+
 <script type="text/javascript">
-  function onYouTubePlayerReady(playerId) {
-    ytplayer = document.getElementById("myytplayer");
-    ytplayer.addEventListener("onStateChange", "onytplayerStateChange");
-  }
-
-  var params = { allowScriptAccess: "always" };
-  var atts = { id: "myytplayer" };
-  swfobject.embedSWF("http://www.youtube.com/v/<%= video_id %>?enablejsapi=1&playerapiid=ytplayer&version=3",
-                     "ytapiplayer", "425", "356", "8", null, null, params, atts);
-
-
+  /* PUSHER */
   // Enable pusher logging - don't include this in production
   Pusher.log = function(message) {
     if (window.console && window.console.log) window.console.log(message);
@@ -26,40 +12,71 @@
 
   // Flash fallback logging - don't include this in production
   WEB_SOCKET_DEBUG = true;
-  shit = true;
+</script>
+
+<script type="text/javascript">
+  var tag = document.createElement('script');
+  tag.src = "//www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+</script>
+
+<script>
+  var yt_player;
+  function onYouTubeIframeAPIReady() {
+    yt_player = new YT.Player('yt_player', {
+      height: '500',
+      width: '640',
+      videoId: '<%= video_id %>',
+      enablejsapi: true,
+      events: {
+        'onStateChange': onYTPlayerStateChange
+      }
+    });
+  }
+</script>
+
+<script type="text/javascript">
+  broadcast = true;
 
   var pusher = new Pusher('86baf974dd9fd950a9c8');
   channel = pusher.subscribe('private-'+<%=session_id%>);
   channel.bind('pusher:subscription_error', function(data) {
-    console.log(data)
+    console.log("ERROR: " + data)
   });
+
   channel.bind('client-play', function(data) {
-    shit = false;
-    ytplayer.playVideo();
+    broadcast = false;
+
+    yt_player.playVideo();
   });
 
   channel.bind('client-pause', function(data) {
-    shit = false;
+    broadcast = false;
+
     thresh = 0.5;
     t = data.time
-    if (t > ytplayer.getCurrentTime() + thresh || t < ytplayer.getCurrentTime() - thresh) {
-      ytplayer.seekTo(t);
+    if (t > yt_player.getCurrentTime() + thresh || t < yt_player.getCurrentTime() - thresh) {
+      yt_player.seekTo(t);
     }
-    if (ytplayer.getPlayerState() != 3)
-      ytplayer.pauseVideo();
+    if (yt_player.getPlayerState() != 3)
+      yt_player.pauseVideo();
   });
 
-  function onytplayerStateChange(newState) {
-    if (shit == false) {
-      shit = true
+  function onYTPlayerStateChange(newState) {
+    newState = newState.data
+
+    if (broadcast == false) {
+      broadcast = true
       return
     }
 
     console.log(newState);
+
     if (newState == 1)
       channel.trigger("client-play", {});
     if (newState == 2)
-      channel.trigger("client-pause", { time: ytplayer.getCurrentTime() });
+      channel.trigger("client-pause", { time: yt_player.getCurrentTime() });
     if (newState == 5)
       channel.trigger("client-play", {});
   }
@@ -71,12 +88,19 @@
 <!-- dropbox chooser -->
 <script type="text/javascript" src="https://www.dropbox.com/static/api/1/dropbox.js" id="dropboxjs" data-app-key="01asumvjw1hu65w"></script>
 </head>
+
 <body>
+<!-- YouTube player -->
+<div id="yt_player">
+  You need Flash player 8+ and JavaScript enabled to view this video.
+</div>
+
+<!-- Dropbox player OFF -->
+<!--
 <video id="vid_player" class="video-js vjs-default-skin" controls
   preload="auto" width="640" height="264" poster="my_video_poster.png"
   data-setup="{}">
   <source src="monkey.mp4" type='video/mp4'>
-  <!-- <source src="my_video.webm" type='video/webm'> -->
 </video>
 <input type="dropbox-chooser" name="selected-file" id="db-chooser" data-link-type="direct"/>
 <script type="text/javascript">
@@ -87,5 +111,6 @@
             _V_("vid_player").ready(function(){this.play();});
         }, false);
 </script>
+-->
 </body>
 </html>

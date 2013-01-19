@@ -1,9 +1,24 @@
 require 'sinatra'
 require 'rubygems'
 require 'hmac-sha2'
+require 'json'
 
-get '/dropbox' do
-  erb :dropbox
+gallery_hash = {}
+
+get '/chooser' do
+  erb :chooser
+end
+
+get '/gallery' do
+  @id = params[:id]
+  @urls = JSON.parse(gallery_hash[params[:id]])
+  erb :gallery
+end
+
+post '/gallery' do
+  key = (0...8).map{65.+(rand(26)).chr}.join
+  gallery_hash[key] = params[:imgs]
+  key
 end
 
 get '/sfuej' do

@@ -59,3 +59,11 @@ img#go {
   vertical-align: bottom;
   cursor: pointer;
 }
+
+iframe#yt_player {
+  margin: 0 auto 0 auto;
+}
+
+div#player_container {
+  text-align: center;
+}

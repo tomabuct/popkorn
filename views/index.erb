@@ -6,7 +6,7 @@
   <script type="text/javascript">
   $(function() {
     $("#go").click(function() {
-      window.location.href = '/sfuej?video_url=' + $('#video_url_box').val()
+      window.location.href = '/sfuej?video_url=' + $('#video_url_box').val() + '&session_id=' + (new Date()).getTime();
     }) 
   })
   </script>

@@ -1,0 +1,55 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="css/video_style.css">
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="http://js.pusher.com/1.12/pusher.min.js" type="text/javascript"></script>
+
+<!-- Pusher init -->
+<script type="text/javascript">
+  // Enable pusher logging - don't include this in production
+  Pusher.log = function(message) {
+    if (window.console && window.console.log)
+      window.console.log(message);
+  };
+
+  // Flash fallback logging - don't include this in production
+  WEB_SOCKET_DEBUG = true;
+</script>
+
+<script type="text/javascript">
+  var pusher = new Pusher('86baf974dd9fd950a9c8');
+  var channel = pusher.subscribe('private-'+<%=session_id%>);
+  channel.bind('pusher:subscription_error', function(data) {
+    console.log("ERROR: " + data)
+  });
+  <% if type == "yt" %>
+  var video_id = "<%= video_id %>";
+  <% end %>
+</script>
+
+<% case type when "yt" %>
+<script type="text/javascript" src="yt_sync.js"></script>
+<% when "vidlink" %>
+<!-- HTML5 video player -->
+<link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
+<script src="http://vjs.zencdn.net/c/video.js"></script>
+<% end %>
+</head>
+
+<body>
+<% case type when "yt" %>
+<!-- YouTube player -->
+<div id="player_container">
+<div id="yt_player">
+  You need Flash player 8+ and JavaScript enabled to view this video.
+</div>
+<% when "vidlink" %>
+<video id="vid_player" class="video-js vjs-default-skin" controls
+  preload="auto" width="65%" height="264" data-setup="{}">
+  <source src="<%= video_id %>" type="video/mp4">
+</video>
+<script type="text/javascript" src="html5_vid_sync.js"></script>
+<% end %>
+</body>
+</html>

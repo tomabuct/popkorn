@@ -3,12 +3,13 @@
   <title>Popcorn</title>
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+  <!-- dropbox chooser -->
+  <script type="text/javascript" src="https://www.dropbox.com/static/api/1/dropbox.js" id="dropboxjs" data-app-key="01asumvjw1hu65w"></script>
+  <!-- button listener -->
   <script type="text/javascript">
-  $(function() {
-    $("#go").click(function() {
-      window.location.href = '/sfuej?video_url=' + $('#video_url_box').val() + '&session_id=' + (new Date()).getTime();
-    }) 
-  })
+  function goto_view_page() {
+    window.location.href = '/play?url=' + $('#video_url_box').val() + '&session_id=' + (new Date()).getTime();
+  }
   </script>
 </head>
 <body>
@@ -19,8 +20,12 @@
 <div class="text">popcorn</div>
 </div>
 <div id="url">
-  <input id="video_url_box" placeholder="YouTube video" type="text">
-  <img src="/images/popcorn.png" id="go">
+  <form action="javascript: goto_view_page()">
+    <input id="video_url_box" placeholder="YouTube video" type="text">
+    <img src="/images/popcorn.png" id="go" onclick="javascript: goto_view_page()">
+<!-- TODO(donaldh) get listener and stuff for this -->
+<!-- <input type="dropbox-chooser" name="selected-file" id="db-chooser" data-link-type="direct"/> -->
+  </form>
 </div>
 </body>
 </html>

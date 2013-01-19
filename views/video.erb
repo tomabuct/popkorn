@@ -1,10 +1,12 @@
 <html>
 <head>
+<link rel="stylesheet" type="text/css" href="style.css">
+
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="http://js.pusher.com/1.12/pusher.min.js" type="text/javascript"></script>
 
+<!-- Pusher init -->
 <script type="text/javascript">
-  /* PUSHER */
   // Enable pusher logging - don't include this in production
   Pusher.log = function(message) {
     if (window.console && window.console.log) window.console.log(message);
@@ -14,6 +16,7 @@
   WEB_SOCKET_DEBUG = true;
 </script>
 
+<!-- YouTube embed script loader -->
 <script type="text/javascript">
   var tag = document.createElement('script');
   tag.src = "//www.youtube.com/iframe_api";
@@ -21,6 +24,7 @@
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 </script>
 
+<!-- YouTube video loader -->
 <script>
   var yt_player;
   function onYouTubeIframeAPIReady() {
@@ -36,6 +40,7 @@
   }
 </script>
 
+<!-- Syncer -->
 <script type="text/javascript">
   broadcast = true;
 

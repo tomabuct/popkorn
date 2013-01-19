@@ -1,0 +1,45 @@
+<html>
+<head>
+<!-- Import JavaScript Libraries. -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="swfobject.js"></script>
+<script type="text/javascript" src="web_socket.js"></script>
+
+<script type="text/javascript">
+
+  // Let the library know where WebSocketMain.swf is:
+  WEB_SOCKET_SWF_LOCATION = "WebSocketMain.swf";
+
+  // Write your code in the same way as for native WebSocket:
+  ws = new WebSocket("ws://localhost:8080/");
+  ws.onopen = function() {
+  };
+  ws.onmessage = function(e) {
+    // Receives a message.
+    if (e.data == "down") {
+      $("#thing").css("color", "red");
+    } else {
+      $("#thing").css("color", "");
+    }
+  };
+  ws.onclose = function() {
+    alert("closed");
+  };
+
+</script>
+</head>
+<body>
+<script type="text/javascript">
+$(function() {
+  $("#thing").mousedown(function() {
+    ws.send("down");
+  })
+
+  $("#thing").mouseup(function() {
+    ws.send("up");
+  })
+});
+</script>
+<p id="thing">hi</p>
+</body>
+</html>

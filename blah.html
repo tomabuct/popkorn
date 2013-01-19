@@ -16,6 +16,16 @@
     ytplayer.addEventListener("onStateChange", "onytplayerStateChange");
   }
 
+  function onytplayerStateChange(newState) {
+    console.log(newState);
+    if (newState == 1) 
+      ws.send("play");
+    if (newState == 2)
+      ws.send("pause;" + parseInt(ytplayer.getCurrentTime()));
+    if (newState == 5)
+      ws.send("play");
+  }
+
   var params = { allowScriptAccess: "always" };
   var atts = { id: "myytplayer" };
   swfobject.embedSWF("http://www.youtube.com/v/ZPPdetZTOx0?enablejsapi=1&playerapiid=ytplayer&version=3",
@@ -30,12 +40,22 @@
   ws.onopen = function() {
   };
   ws.onmessage = function(e) {
+    console.log(e.data);
     // Receives a message.
     if (e.data == "play") {
       ytplayer.playVideo();
-    } else {
-      $("#thing").css("color", "");
+    } 
+    if (/pause;/.test(e.data)){
+      thresh = 1.5;
+      split = e.data.split(";");
+      t = parseInt(split[1])
+      if (t > ytplayer.getCurrentTime() + thresh || t < ytplayer.getCurrentTime() - thresh) {
+        ytplayer.seekTo(t);
+      }
+      if (ytplayer.getPlayerState() != 3)
+        ytplayer.pauseVideo();
     }
+    
   };
   ws.onclose = function() {
     alert("closed");
@@ -44,17 +64,5 @@
 </script>
 </head>
 <body>
-<script type="text/javascript">
-$(function() {
-  $("#thing").mousedown(function() {
-    ws.send("play");
-  })
-
-  $("#thing").mouseup(function() {
-    ws.send("up");
-  })
-});
-</script>
-<p id="thing">hi</p>
 </body>
 </html>

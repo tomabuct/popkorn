@@ -82,3 +82,26 @@ div#copied_msg {
   border-radius: 10px;  
   padding: 20px;
 }
+
+img#hang {
+  height: 280px;
+}
+
+div#title_logo .text {
+  margin-top: -100px;
+  margin-left: 15px;
+}
+
+div#title_logo {
+  font-family: 'Gotham';
+  font-weight: 900;
+  font-size: 70px;
+  margin-top: -140px;
+  color: white;
+  opacity: 0.95;
+  text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  -webkit-transform: rotate(-4deg);
+  -webkit-transform-origin: top center;
+  margin-bottom: 100px;
+}

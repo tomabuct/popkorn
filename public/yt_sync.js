@@ -18,7 +18,7 @@ function onYouTubeIframeAPIReady() {
 }
 
 // Syncer 
-broadcast = true;
+var broadcast = true;
 
 channel.bind('client-play', function(data) {
   broadcast = false;

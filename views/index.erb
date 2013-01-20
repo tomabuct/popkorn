@@ -7,9 +7,15 @@
   <script type="text/javascript" src="https://www.dropbox.com/static/api/1/dropbox.js" id="dropboxjs" data-app-key="01asumvjw1hu65w"></script>
   <!-- button listener -->
   <script type="text/javascript">
-  function goto_view_page() {
-    window.location.href = '/play?url=' + $('#video_url_box').val() + '&session_id=' + (new Date()).getTime();
+$(document).ready(function() {
+  function goto_view_page(url) {
+    window.location.href = '/play?url=' + escape(url || $('#video_url_box').val()) + '&session_id=' + (new Date()).getTime();
   }
+  document.getElementById("db-chooser").addEventListener(
+  "DbxChooserSuccess", function(e) {
+    goto_view_page(e.files[0].link)
+  }, false);
+});
   </script>
 </head>
 <body>
@@ -23,9 +29,8 @@
   <form action="javascript: goto_view_page()">
     <input id="video_url_box" placeholder="YouTube video" type="text">
     <img src="/images/popcorn.png" id="go" onclick="javascript: goto_view_page()">
-<!-- TODO(donaldh) get listener and stuff for this -->
-<!-- <input type="dropbox-chooser" name="selected-file" id="db-chooser" data-link-type="direct"/> -->
   </form>
 </div>
+<input type="dropbox-chooser" name="selected-file" id="db-chooser" data-link-type="direct"/>
 </body>
 </html>

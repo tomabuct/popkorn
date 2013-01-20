@@ -7,14 +7,16 @@
   <script type="text/javascript" src="https://www.dropbox.com/static/api/1/dropbox.js" id="dropboxjs" data-app-key="01asumvjw1hu65w"></script>
   <!-- button listener -->
   <script type="text/javascript">
-$(document).ready(function() {
   function goto_view_page(url) {
-    window.location.href = '/play?url=' + escape(url || $('#video_url_box').val()) + '&session_id=' + (new Date()).getTime();
+    timestamp = new Date().getTime()
+    url = escape(url || $('#video_url_box').val())
+    window.location.href = '/play?url=' + url + '&session_id=' + timestamp
   }
-  document.getElementById("db-chooser").addEventListener(
+$(document).ready(function() {
+  /*document.getElementById("db-chooser").addEventListener(
   "DbxChooserSuccess", function(e) {
     goto_view_page(e.files[0].link)
-  }, false);
+  }, false);*/
 });
   </script>
 </head>

@@ -34,12 +34,14 @@ $(document).ready(function() {
     <input id="video_url_box" placeholder="What do you want to watch?" type="text">
     <script type="text/javascript"/>
     function dropboxOnClick() {
-      Dropbox.choose({
+/*      Dropbox.choose({
         linkType: 'direct',
         success: function(files) {
           goto_view_page(files[0].link);
         }
       });
+*/
+      window.location.href = "/chooser"
     }
     </script>
     <img src="/images/dropbox_logo.png" id="db_button" onclick="javascript: dropboxOnClick()">

@@ -17,9 +17,21 @@ div#title {
   opacity: 0.95;
   text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.4);
   text-align: center;
-  -webkit-transform: rotate(-4deg);
-  -webkit-transform-origin: top center;
-  margin-bottom: 100px;
+    -webkit-transform: rotate(3deg);
+    -webkit-transform-origin: top center;
+    margin-bottom: 100px;
+    -webkit-animation: swinger 6s;
+    -webkit-animation-iteration-count: 1;
+  }
+
+  @-webkit-keyframes swinger /* Safari and Chrome */
+  {
+  0%   {-webkit-transform: rotate(-7deg); }
+  20%   {-webkit-transform: rotate(7deg); }
+  40%   {-webkit-transform: rotate(-5deg); }
+  60%   {-webkit-transform: rotate(5deg);  }
+  80%   {-webkit-transform: rotate(-3deg); }
+  100%   {-webkit-transform: rotate(3deg); }
 }
 
 body {
@@ -97,3 +109,4 @@ span#or {
   opacity: 0.9;
   color: #0f6aaa;
 }
+

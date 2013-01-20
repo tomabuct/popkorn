@@ -1,3 +1,5 @@
+# heroku config:add RACK_ENV=production RAILS_ENV=production --app popcorny
+
 production:
   uri: <%= ENV['MONGOHQ_URL'] %>
   max_retries_on_connection_failure: 20

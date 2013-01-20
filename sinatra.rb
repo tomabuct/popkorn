@@ -44,6 +44,7 @@ get '/play' do
   end
   url = CGI.unescape(params[:url])
   session_id = params[:session_id]
+  # shortening this is kinda risky, but I'm a daredevil -Don
   short = Digest::MD5.hexdigest(url+session_id)[0..8]
   link = Link.new(:shortened => short, :session_id => session_id, :url => url)
   link.save()

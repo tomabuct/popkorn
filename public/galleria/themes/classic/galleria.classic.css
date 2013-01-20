@@ -7,8 +7,6 @@
     overflow: hidden;
     background: #fff;
     top: -55px;
-    border-radius: 9px;
-    -moz-border-radius: 9px;
 }
 .galleria-container img {
     -moz-user-select: none;

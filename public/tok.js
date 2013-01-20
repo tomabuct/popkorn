@@ -31,7 +31,7 @@ $(function() {
       $("#spinner").hide();
       console.log("connected!");
       // Put my webcam in a div
-      var publishProps = {height:240, width:320};
+      var publishProps = {height:160, width:250};
       publisher = TB.initPublisher(apiKey, 'publisher', publishProps);
       // Send my stream to the session
       session.publish(publisher);

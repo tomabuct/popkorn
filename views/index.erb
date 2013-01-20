@@ -27,10 +27,13 @@ $(document).ready(function() {
 </div>
 <div id="url">
   <form action="javascript: goto_view_page()">
-    <input id="video_url_box" placeholder="YouTube video" type="text">
+    <img id="sc_logo" src="/images/soundcloud_logo.png">
+    <img id="yt_logo" src="/images/youtube_logo.png">
+    <input id="video_url_box" placeholder="What do you want to watch?" type="text">
+    <img src="/images/dropbox_logo.png" id="db_button">
     <img src="/images/popcorn.png" id="go" onclick="javascript: goto_view_page()">
   </form>
+  <!--<input type="dropbox-chooser" name="selected-file" id="db-chooser" data-link-type="direct"/>-->
 </div>
-<input type="dropbox-chooser" name="selected-file" id="db-chooser" data-link-type="direct"/>
 </body>
 </html>

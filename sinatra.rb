@@ -42,7 +42,7 @@ get '/play' do
       :video_id => url.split('=', 2)[1],
       :session_id => params[:session_id]
     }
-  when /.*\.mp4/
+  when /.*\.(mp4|mov)/
     erb :other_video, :locals => {
       :url => url,
       :session_id => params[:session_id]

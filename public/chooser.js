@@ -7,13 +7,15 @@ $(document).ready(function() {
   client.authenticate(function(error, client) {
     run(client);
   });
+  $("#list-header").hide();
+  $("#list-footer").hide();
+  $("#pop").hide();
 
   function run() {
     client.readdir("/", function(error, entries, dir_stat, entry_stats) {
-      if (error) {
-        return showError(error);  // Something went wrong.
-      }
-
+      $("#list-header").show();
+      $("#pop").slideDown(1000);
+      $("#list-footer").show();
       var Folder = Backbone.Model.extend({
         initialize: function() {
           if (this.get("mimeType") == "inode/directory") {
@@ -78,7 +80,8 @@ $(document).ready(function() {
                     "path": prev_path,
                     "isFolder": true
                   });
-                entry_stats.unshift(up_folder);
+                if (curr_path != "/")
+                  entry_stats.unshift(up_folder);
                 Folders.reset(entry_stats);
               });
           }

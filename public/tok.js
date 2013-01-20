@@ -20,6 +20,7 @@ $(function() {
     started = true;
     $("#spinner").show();
     $(".video").hide();
+    var publishProps = {height:185, width:300};
     channel.trigger("client-tok-" + id, { });
     var session = TB.initSession(sessionId);
     session.addEventListener('sessionConnected', sessionConnectedHandler);
@@ -31,7 +32,6 @@ $(function() {
       $("#spinner").hide();
       console.log("connected!");
       // Put my webcam in a div
-      var publishProps = {height:240, width:320};
       publisher = TB.initPublisher(apiKey, 'publisher', publishProps);
       // Send my stream to the session
       session.publish(publisher);
@@ -50,9 +50,9 @@ $(function() {
 
         var div = document.createElement('div');
         div.setAttribute('id', 'stream' + streams[i].steamId);
-        document.body.appendChild(div);
+        $("#footer").prepend(div);
 
-        session.subscribe(streams[i], div.id)
+        session.subscribe(streams[i], div.id, publishProps)
       }
     }
   }

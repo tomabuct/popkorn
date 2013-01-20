@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>Popcorn</title>
+  <title>Popkorn</title>
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
   <!-- dropbox chooser -->
@@ -25,17 +25,26 @@ $(document).ready(function() {
 </div>
 <div id="title">
 <img id="hang" src="/images/hang.png"><br />
-<div class="text">popcorn</div>
+<div class="text">popkorn</div>
 </div>
 <div id="url">
   <form action="javascript: goto_view_page()">
     <!--<img id="sc_logo" src="/images/soundcloud_logo.png">-->
     <img id="yt_logo" src="/images/youtube_logo.png">
     <input id="video_url_box" placeholder="What do you want to watch?" type="text">
-    <img src="/images/dropbox_logo.png" id="db_button">
+    <script type="text/javascript"/>
+    function dropboxOnClick() {
+      Dropbox.choose({
+        linkType: 'direct',
+        success: function(files) {
+          goto_view_page(files[0].link);
+        }
+      });
+    }
+    </script>
+    <img src="/images/dropbox_logo.png" id="db_button" onclick="javascript: dropboxOnClick()">
     <img src="/images/popcorn.png" id="go" onclick="javascript: goto_view_page()">
   </form>
-  <!--<input type="dropbox-chooser" name="selected-file" id="db-chooser" data-link-type="direct"/>-->
 </div>
 </body>
 </html>

@@ -14,7 +14,38 @@ $(document).ready(function() {
         return showError(error);  // Something went wrong.
       }
 
-      var Folder = Backbone.Model.extend();
+      var Folder = Backbone.Model.extend({
+        initialize: function() {
+          if (this.get("mimeType") == "inode/directory") {
+            this.set({"kind": "folder"});
+            this.set({"img": "<img src=\"../images/folder.png\">"});
+          }
+          else if (this.get("mimeType") == "application/pdf") {
+            this.set({"kind": "pdf"});
+            this.set({"img": "<img src=\"../images/file.png\">"});
+          }
+          else if (this.get("mimeType") == "application/zip") {
+            this.set({"kind": "zip"});
+            this.set({"img": "<img src=\"../images/file.png\">"});
+          }
+          else if (this.get("mimeType") == "text/plain") {
+            this.set({"kind": "document"});
+            this.set({"img": "<img src=\"../images/file.png\">"});
+          }
+          else if (/image*/.test(this.get("mimeType"))) {
+            this.set({"kind": "image"});
+            this.set({"img": "<img src=\"../images/picture.png\">"});
+          }
+          else if (this.get("mimeType") == "application/msword") {
+            this.set({"kind": "document"});
+            this.set({"img": "<img src=\"../images/file.png\">"});
+          }
+          else {
+            this.set({"kind": this.get("mimeType")});
+            this.set({"img": "<img src=\"../images/file.png\">"});
+          }
+        }
+      });
       var FolderList = Backbone.Collection.extend({
         model: Folder
       });
@@ -24,7 +55,7 @@ $(document).ready(function() {
 
       var FolderView = Backbone.View.extend({
         tagName: "li",
-        template: _.template("<div class='name'><%= name %></div><div class='kind'><%= mimeType %></div>"),
+        template: _.template("<div class='name'><%= img %><%= name %></div><div class='kind'><%= kind %></div>"),
         events: {"click" : "onClick"},
         render: function() {
           this.$el.html(this.template(this.model.toJSON()));
@@ -78,7 +109,7 @@ $(document).ready(function() {
           function(error, entries, dir_stat, entry_stats) {
             var files = _.filter(entry_stats, 
               function(e) {
-                return e.mimeType == "image/jpeg";
+                return /image/.test(e.mimeType);
               });
             // TODO: Add a little spinner here while it's posting?
             $('#pop').hide();

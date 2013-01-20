@@ -42,19 +42,16 @@ get '/play' do
   if !params[:url] || !params[:session_id]
     return [404, '404: Invalid url']
   end
+
+  # shortener
   url = CGI.unescape(params[:url])
   session_id = params[:session_id]
   # shortening this is kinda risky, but I'm a daredevil -Don
   short = Digest::MD5.hexdigest(url+session_id)[0..8]
   link = Link.new(:shortened => short, :session_id => session_id, :url => url)
   link.save()
+
   case url
-  when /soundcloud\.com/
-    erb :soundcloud, :locals => {
-      :url => url,
-      :session_id => session_id,
-      :short_url => short
-    }
   when /youtube\.com/
     erb :youtube, :locals => {
       :video_id => url.split('=', 2)[1],
@@ -67,12 +64,17 @@ get '/play' do
       :session_id => session_id,
       :short_url => short
     }
+  #when /soundcloud\.com/
+  #  erb :soundcloud, :locals => {
+  #    :url => url,
+  #    :session_id => session_id,
+  #    :short_url => short
+  #  }
   else
     [404, '404: Invalid link']
   end
 end
 
-# TODO(donaldh) for shortener if we get to it
 get %r{/(?<shortened>[\da-zA-Z]+)} do
   # look it up
   shortened = params['captures'][0]

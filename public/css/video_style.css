@@ -1,10 +1,14 @@
 body {
-  background-color: black;
+  background: urL(/images/bg.png) center;
+  background-color: #0091f8;
 }
 
 iframe#yt_player {
   display: block;
   margin: 0 auto 0 auto;
+  border: 15px solid black;
+  border-radius: 15px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
 }
 
 div#player_container {
@@ -12,4 +16,56 @@ div#player_container {
   position:absolute;
   top: 50%;
   width: 100%;
+  text-align: center;
+}
+
+div#link {
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.45, #222),
+    color-stop(0.73, #222222),
+    color-stop(0.87, #333)
+  );
+
+  font: 18px Gotham;
+  color: white;
+  border-radius: 50px;
+  width: 60px;
+  height: 60px;
+  line-height: 100px;
+  margin-left: 82%;
+  margin-bottom: -8px;
+  font-weight: 500;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+div#link img {
+  opacity: 0.9;
+  margin-top: 10px;
+  margin-left: 5px;
+  height: 35px;
+}
+
+div#link img:hover {
+  opacity: 1;
+}
+
+div#copied_msg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -25px;
+  margin-left: -350px;
+  height: 50px;
+  width: 700px;
+  text-align: center;
+  font: 40px 'Helvetica Neue';
+  font-weight: 600;
+  color: white;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;  
+  padding: 20px;
 }

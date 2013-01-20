@@ -23,7 +23,7 @@ div#title {
 }
 
 body {
-  background: urL(/images/bg.png) center;
+  background: url(/images/bg.png) center;
   background-color: #0091f8;
 }
 

@@ -22,7 +22,11 @@
 
 <script type="text/javascript">
   $(function() {
-    url = window.location.hostname + ":" + window.location.port + "/<%= short_url %>";
+    var url = window.location.hostname;
+    if (window.location.port !== '') {
+      url += ":" + window.location.port;
+    }
+    url += "/<%= short_url %>";
     $("#copier").attr("data-clipboard-text", url)
 
     clip = new ZeroClipboard($("#copier")[0]);
@@ -30,7 +34,6 @@
       $("#copied_msg").fadeIn(1000, function() { $("#copied_msg").fadeOut(2000) } );
     } );
   });
-
 </script>
 
 <link rel="stylesheet" type="text/css" href="css/pop.css">

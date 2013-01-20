@@ -16,21 +16,29 @@ class Link
   field :url, type: String
 end
 
-gallery_hash = {}
+class Album
+  include Mongoid::Document
+
+  field :session_id, type: Integer
+  field :urls, type: String
+end
 
 get '/chooser' do
   erb :chooser
 end
 
 get '/gallery' do
-  @id = params[:id]
-  @urls = JSON.parse(gallery_hash[params[:id]])
+  id = params[:id]
+  album = Album.where(:session_id => id)[0]
+  @id = id
+  @urls = JSON.parse(album.urls)
   erb :gallery
 end
 
 post '/gallery' do
   key = (0...8).map{65.+(rand(26)).chr}.join
-  gallery_hash[key] = params[:imgs]
+  album = Album.new(:session_id => key, :urls => params[:imgs])
+  album.save
   key
 end
 
@@ -47,7 +55,7 @@ get '/play' do
   # shortening this is kinda risky, but I'm a daredevil -Don
   short = Digest::MD5.hexdigest(url+session_id)[0..8]
   link = Link.new(:shortened => short, :session_id => session_id, :url => url)
-  link.save()
+  link.save
   case url
   when /soundcloud\.com/
     erb :soundcloud, :locals => {
@@ -77,7 +85,7 @@ get %r{/(?<shortened>[\da-zA-Z]+)} do
   # look it up
   shortened = params['captures'][0]
   link = Link.where('shortened' => shortened)[0]
-  final_url = "/play?url="+CGI.escape(link.url)+"&session_id="+link.session_id.to_s
+  final_url = "/play?url=#{CGI.escape(link.url)}&session_id=#{link.session_id.to_s}"
   erb :shortcut, :locals => { :url => final_url }
 end
 

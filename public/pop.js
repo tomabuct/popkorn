@@ -79,6 +79,7 @@ $(document).ready(function() {
       var pusher = new Pusher('86baf974dd9fd950a9c8');
       channel = pusher.subscribe('private-together');
       var sent = false;
+      client.makeUrl("/Misc/20130103_113258.mp4", {'download': true}, function(error, u){console.log(u.url);});
 
       function onSelect(e) {
         client.readdir($("#current").html(),

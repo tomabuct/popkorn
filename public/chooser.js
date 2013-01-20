@@ -109,7 +109,7 @@ $(document).ready(function() {
           function(error, entries, dir_stat, entry_stats) {
             var files = _.filter(entry_stats, 
               function(e) {
-                return e.mimeType == "image/jpeg";
+                return /image/.test(e.mimeType);
               });
             // TODO: Add a little spinner here while it's posting?
             $('#pop').hide();

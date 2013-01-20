@@ -1,3 +1,4 @@
+require 'cgi'
 require 'sinatra'
 require 'rubygems'
 require 'hmac-sha2'
@@ -25,37 +26,29 @@ get '/' do
   erb :index
 end
 
-def parse_url(url)
-  if (url['youtube.com'])
-    :yt
-  elsif (url['soundcloud.com'])
-    :sc
-  else
-    :other_video
-  end  
-end
-
 get '/play' do
   if !params[:url] || !params[:session_id]
     return [404, '404: Invalid url']
   end
-
-  case parse_url(params[:url])
-  when :sc
+  url = CGI.unescape(params[:url])
+  case url
+  when /soundcloud\.com/
     erb :soundcloud, :locals => {
-      :url => params[:url],
+      :url => url,
       :session_id => params[:session_id]
     }
-  when :yt
+  when /youtube\.com/
     erb :youtube, :locals => {
-      :video_id => params[:url].split('=', 2)[1],
+      :video_id => url.split('=', 2)[1],
       :session_id => params[:session_id]
     }
-  when :other_video
+  when /.*\.mp4/
     erb :other_video, :locals => {
-      :url => params[:url],
+      :url => url,
       :session_id => params[:session_id]
     }
+  else
+    return [404, '404: Invalid link']
   end
 end
 

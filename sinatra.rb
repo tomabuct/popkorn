@@ -23,6 +23,8 @@ class Album
   field :urls, type: String
 end
 
+shorturl_to_client_id = {}
+
 get '/chooser' do
   erb :chooser
 end
@@ -58,13 +60,14 @@ get '/play' do
   short = Digest::MD5.hexdigest(url+session_id)[0..8]
   link = Link.new(:shortened => short, :session_id => session_id, :url => url)
   link.save()
-
+  shorturl_to_client_id[short] = (shorturl_to_client_id[short] || 0) + 1
   case url
   when /youtube\.com/
     erb :youtube, :locals => {
       :video_id => url.split('=', 2)[1],
       :session_id => session_id,
-      :short_url => short
+      :short_url => short,
+      :client_id => shorturl_to_client_id[short] 
     }
   when /.*\.(mp4|mov)/
     erb :other_video, :locals => {

@@ -194,9 +194,10 @@ h1 {
 #footer {
   padding: 10px;
   position: relative;
-  background: #999;
+  background: #777;
   height: 190px;
   width: 680px;
+  top: -6px;
   margin-right: auto;
   margin-left: auto;
 }
@@ -237,13 +238,7 @@ h1 {
 }
 
 .video {
-  background-image: url("../images/video.png");
-  background-repeat: no-repeat;
-  background-position: 22px 8px;
 }
 .video:hover {
-  background-image: url("../images/video.png");
-  background-repeat: no-repeat;
-  background-position: 22px 8px;
 }
 

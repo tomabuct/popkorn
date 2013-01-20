@@ -32,10 +32,19 @@ $(document).ready(function() {
     <img id="sc_logo" src="/images/soundcloud_logo.png">
     <img id="yt_logo" src="/images/youtube_logo.png">
     <input id="video_url_box" placeholder="What do you want to watch?" type="text">
-    <img src="/images/dropbox_logo.png" id="db_button">
+    <script type="text/javascript"/>
+    function dropboxOnClick() {
+      Dropbox.choose({
+        linkType: 'direct',
+        success: function(files) {
+          goto_view_page(files[0].link);
+        }
+      });
+    }
+    </script>
+    <img src="/images/dropbox_logo.png" id="db_button" onclick="javascript: dropboxOnClick()">
     <img src="/images/popcorn.png" id="go" onclick="javascript: goto_view_page()">
   </form>
-  <!--<input type="dropbox-chooser" name="selected-file" id="db-chooser" data-link-type="direct"/>-->
 </div>
 </body>
 </html>

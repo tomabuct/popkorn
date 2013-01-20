@@ -4,7 +4,7 @@ $(document).ready(function() {
     transition: 'fade',
     imageCrop: true,
     width: 700,
-    height: 0.5625,
+    height: 475,
     imageTimeout: 70000
   });
   Galleria.run('#galleria');

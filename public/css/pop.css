@@ -19,9 +19,32 @@
   width: 13px;
   margin-right: 4px;
 }
+#indicator{
+  position: relative;
+  top: -7px;
+}
+.added {
+  background-color: lightgreen;
+}
+.selected {
+  background-color: #388ec8;
+}
+.selected:hover {
+  background-color: darkblue;
+}
+#pop li a{
+  text-decoration: none;
+  color: #333;
+}
 #pop ul li:hover {
   background-color: #eee;
+}
+#pop .selected:hover {
+  background-color: #eee;
+}
+#pop ul li a:hover {
   cursor: pointer; cursor: hand;
+  text-decoration: underline;
 }
 #pop {
   padding: 15px;

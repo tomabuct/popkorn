@@ -53,17 +53,32 @@ $(document).ready(function() {
       });
 
       var Folders = new FolderList;
+      var FolderViews;
       Folders.reset(entry_stats);
 
       var FolderView = Backbone.View.extend({
         tagName: "li",
-        template: _.template("<div class='name'><%= img %><%= name %></div><div class='kind'><%= kind %></div>"),
-        events: {"click" : "onClick"},
+        template: _.template("<div class='name'><%= img %><a><%= name %></a></div><div class='kind'><%= kind %></div>"),
+        events: {
+          "click a" : "onClickName",
+          "click" : "onSelect"
+        },
         render: function() {
           this.$el.html(this.template(this.model.toJSON()));
           return this;
         },
-        onClick: function() {
+        onSelect: function() {
+          console.log('selected!');
+          this.$el.addClass("selected");
+          this.trigger("selected", this);
+        },
+        unselect: function() {
+          this.$el.removeClass("selected");
+        },
+        added: function() {
+          this.$el.addClass("added");
+        },
+        onClickName: function() {
           if (this.model.get("isFolder")) {
             var ths = this;
             client.readdir(this.model.get("path"),
@@ -87,21 +102,91 @@ $(document).ready(function() {
           }
         },
       });
+      img_urls = new Array();
+      img_names = new Array();
 
       var AppView = Backbone.View.extend({
         el: $("#pop"),
         initialize: function() {
           this.listenTo(Folders, 'reset', this.render);
+          this.selected = undefined;
+          this.add_button = $("#add");
+          this.add_button.hide();
+          this.add_folder_button = $("#add_folder");
+          this.done_button = $("#done");
           this.render();
+        },
+        events: {
+          "click #add": "add",
+          "click #add_folder": "add_folder",
+          "click #done": "postUrls"
         },
         render: function() {
           $('#folders-list').html("");
-          Folders.each(function(folder) {
+          var ths = this;
+          FolderViews = Folders.map(function(folder) {
             var folderView = new FolderView({
               model: folder
             });
+            if (_.contains(img_names, folder.get("name")))
+              folderView.added();
+            console.log('lol');
             $('#folders-list').append(folderView.render().el);
+            folderView.bind("selected", ths.onSelected, ths);
+            return folderView;
           });
+          this.selected = undefined;
+          this.add_button.hide();
+        },
+
+        onSelected: function(folderView) {
+          console.log("onSelected");
+          if (this.selected) {
+            this.selected.unselect();
+          }
+          if (/image/.test(folderView.model.get("mimeType")))
+            this.add_button.show();
+          else
+            this.add_button.hide();
+          this.selected = folderView;
+        },
+
+        add: function() {
+          if (/image/.test(this.selected.model.get("mimeType"))) {
+            this.make_url(this.selected.model.toJSON());
+            this.selected.added();
+          }
+        },
+
+        add_folder: function() {
+          var ths = this;
+          _.each(FolderViews,
+            function(e) {
+              if (/image/.test(e.model.get("mimeType"))){
+                e.added();
+                ths.make_url(e.model.toJSON());
+              }
+          });
+        },
+
+        make_url: function(item) {
+          client.makeUrl(item.path,{'download': true}, 
+            function(error, u) {
+              if (!_.contains(img_names, item.name)) {
+                console.log("added " + u.url);
+                img_urls.push(u.url);
+                img_names.push(item.name);
+                $("#count").html(img_urls.length);
+              }
+            });
+        },
+
+        postUrls: function() {
+          $.post('/gallery', 'imgs=' + JSON.stringify(img_urls), 
+            function(data, textStatus, jq) {
+              window.location = "/gallery?id=" + data;
+            }
+          );
         }
       });
 

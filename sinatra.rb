@@ -1,8 +1,20 @@
 require 'cgi'
+require 'digest/md5'
+require 'mongoid'
 require 'sinatra'
 require 'rubygems'
 require 'hmac-sha2'
 require 'json'
+
+Mongoid.load!('mongoid.yml')
+
+class Link
+  include Mongoid::Document
+
+  field :shortened, type: String
+  field :session_id, type: Integer
+  field :url, type: String
+end
 
 gallery_hash = {}
 
@@ -31,31 +43,42 @@ get '/play' do
     return [404, '404: Invalid url']
   end
   url = CGI.unescape(params[:url])
+  session_id = params[:session_id]
+  short = Digest::MD5.hexdigest(url+session_id)[0..8]
+  link = Link.new(:shortened => short, :session_id => session_id, :url => url)
+  link.save()
   case url
   when /soundcloud\.com/
     erb :soundcloud, :locals => {
       :url => url,
-      :session_id => params[:session_id]
+      :session_id => session_id,
+      :short_url => short
     }
   when /youtube\.com/
     erb :youtube, :locals => {
       :video_id => url.split('=', 2)[1],
-      :session_id => params[:session_id]
+      :session_id => session_id,
+      :short_url => short
     }
   when /.*\.mp4/
     erb :other_video, :locals => {
       :url => url,
-      :session_id => params[:session_id]
+      :session_id => session_id,
+      :short_url => short
     }
   else
-    return [404, '404: Invalid link']
+    [404, '404: Invalid link']
   end
 end
 
 # TODO(donaldh) for shortener if we get to it
-#get %r{/(?<shortened>.*/?)} do
-#  params['captures'][0]
-#end
+get %r{/(?<shortened>[\da-zA-Z]+)} do
+  # look it up
+  shortened = params['captures'][0]
+  link = Link.where('shortened' => shortened)[0]
+  final_url = "/play?url="+CGI.escape(link.url)+"&session_id="+link.session_id.to_s
+  erb :shortcut, :locals => { :url => final_url }
+end
 
 post '/pusher/auth' do
   key = '86baf974dd9fd950a9c8'

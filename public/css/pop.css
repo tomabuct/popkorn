@@ -87,7 +87,36 @@
   width: 43px;
   float: right;
 }
-
+#bluefix2 {
+  z-index: 6;
+  position: fixed;
+  bottom: 0px;
+  right: 0;
+  background-color: #0091f8;
+  color: #0091f8;
+  height: 49px;
+  width: 43px;
+  float: right;
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-left-color: #555;
+}
+#list-footer {
+  padding-top: 5px;
+  z-index: 8;
+  position: fixed;
+  height: 43px;
+  background-color: white;
+  width: 100%;
+  bottom: 0;
+  left: 43px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #555;
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-left-color: #555;
+}
 #current {
   text-align: left;
   margin-left: 30px;

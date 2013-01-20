@@ -1,0 +1,41 @@
+<!doctype html>
+<head>
+  <title>Gallery</title>
+  <script type="text/javascript">
+    window.id = "<%= @id %>";
+  </script>
+  <script src="jquery.js"></script>
+  <script src="spin.js"></script>
+  <script src="toastr.js"></script>
+  <script src="http://static.opentok.com/v0.91/js/TB.min.js"></script>
+  <script src="galleria/galleria-1.2.9.js"></script>
+  <script src="http://js.pusher.com/1.12/pusher.min.js" type="text/javascript"></script>
+  <script src="gallery.js"></script>
+  <script src="tok.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/pop.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link href="toastr.css" rel="stylesheet"/>
+  <style>
+    #galleria {
+      height: 400px;
+      width: 700px;
+      margin-right: auto;
+      margin-left: auto;
+      margin-top: 65px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Popcorn</h1>
+  <img src="images/popcorn.png" width="15%" height="15%" id="logo">
+  <div id="galleria"> 
+    <% for url in @urls %>
+      <img src="<%= url %>">
+    <% end %>
+  </div>
+  <div id="publisher"></div>
+  <a class="button video">Start Video Chat</a>
+  <div id="spinner"></div>
+</body>
+</html>

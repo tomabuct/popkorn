@@ -48,15 +48,16 @@ div#toolbar {
   margin-bottom: 30px;
 }
 
-div#share img {
+#copier {
   opacity: 0.9;
   margin-top: 10px;
   margin-left: 4px;
   height: 35px;
 }
 
-div#share img:hover {
+#copier:hover {
   opacity: 1;
+  cursor:pointer;
 }
 
 img#videor {

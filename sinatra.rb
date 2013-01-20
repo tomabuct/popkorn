@@ -1,61 +1,54 @@
+require 'cgi'
 require 'sinatra'
 require 'rubygems'
 require 'hmac-sha2'
+require 'json'
 
-get '/dropbox' do
-  erb :dropbox
+gallery_hash = {}
+
+get '/chooser' do
+  erb :chooser
 end
 
-<<<<<<< Updated upstream
+get '/gallery' do
+  @id = params[:id]
+  @urls = JSON.parse(gallery_hash[params[:id]])
+  erb :gallery
+end
+
+post '/gallery' do
+  key = (0...8).map{65.+(rand(26)).chr}.join
+  gallery_hash[key] = params[:imgs]
+  key
+end
+
 get '/' do
   erb :index
-end
-
-def parse_url(url)
-  if (url['youtube.com'])
-    :yt
-  elsif (url['soundcloud.com'])
-    :sc
-=======
-get '/sfuej' do
-  if !(params[:video_url] && params[:session_id])
-    [404, '404: Invalid url']
-  elsif params[:video_url]['soundcloud.com']
-    type = 'sc'
-    video_url = params[:video_url]
-    video_id = video_url.split('.com/', 2)[1]
-    erb :soundcloud, :locals => {
-      :video_id => video_id,
-      :session_id => params[:session_id],
-      :type => type
-    }
->>>>>>> Stashed changes
-  else
-    :other_video
-  end  
 end
 
 get '/play' do
   if !params[:url] || !params[:session_id]
     return [404, '404: Invalid url']
   end
-
-  case parse_url(params[:url])
-  when :sc
+  url = CGI.unescape(params[:url])
+  case url
+  when /soundcloud\.com/
     erb :soundcloud, :locals => {
-      :url => params[:url],
+      :url => url,
       :session_id => params[:session_id]
     }
-  when :yt
+  when /youtube\.com/
     erb :youtube, :locals => {
-      :video_id => params[:url].split('=', 2)[1],
+      :video_id => url.split('=', 2)[1],
       :session_id => params[:session_id]
     }
-  when :other_video
+  when /.*\.(mp4|mov)/
     erb :other_video, :locals => {
-      :url => params[:url],
+      :url => url,
       :session_id => params[:session_id]
     }
+  else
+    return [404, '404: Invalid link']
   end
 end
 

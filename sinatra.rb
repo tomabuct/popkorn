@@ -6,6 +6,7 @@ get '/dropbox' do
   erb :dropbox
 end
 
+<<<<<<< Updated upstream
 get '/' do
   erb :index
 end
@@ -15,6 +16,20 @@ def parse_url(url)
     :yt
   elsif (url['soundcloud.com'])
     :sc
+=======
+get '/sfuej' do
+  if !(params[:video_url] && params[:session_id])
+    [404, '404: Invalid url']
+  elsif params[:video_url]['soundcloud.com']
+    type = 'sc'
+    video_url = params[:video_url]
+    video_id = video_url.split('.com/', 2)[1]
+    erb :soundcloud, :locals => {
+      :video_id => video_id,
+      :session_id => params[:session_id],
+      :type => type
+    }
+>>>>>>> Stashed changes
   else
     :other_video
   end  

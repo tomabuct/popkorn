@@ -1,7 +1,7 @@
 $(document).ready(function() {
-  var apiKey = '22593122';
-  var sessionId = '2_MX4yMjU5MzEyMn4xMjcuMC4wLjF-U2F0IEphbiAxOSAwODoxMjowNiBQU1QgMjAxM34wLjk4Mzc4NzA2fg';
-  var token = 'T1==cGFydG5lcl9pZD0yMjU5MzEyMiZzaWc9ZDZiMzQzNWFmZjU5OWNjYzhmNjNkOWYxMDRjNmZmMGQ0ODY1MTJkMTpzZXNzaW9uX2lkPTJfTVg0eU1qVTVNekV5TW40eE1qY3VNQzR3TGpGLVUyRjBJRXBoYmlBeE9TQXdPRG94TWpvd05pQlFVMVFnTWpBeE0zNHdMams0TXpjNE56QTJmZyZjcmVhdGVfdGltZT0xMzU4NjExOTI5JmV4cGlyZV90aW1lPTEzNTg2OTgzMjkmcm9sZT1wdWJsaXNoZXImbm9uY2U9NDQzOTYyJnNka192ZXJzaW9uPXRiLWRhc2hib2FyZC1qYXZhc2NyaXB0LXYx';
+  var apiKey = '22606522';
+  var sessionId = '2_MX4yMjYwNjUyMn4xMjcuMC4wLjF-U3VuIEphbiAyMCAxMDoxMDoxNyBQU1QgMjAxM34wLjk2MDM3OX4';
+  var token = 'T1==cGFydG5lcl9pZD0yMjYwNjUyMiZzaWc9YzY5MjY3Yzk4YjMwNTM5Mjk2ODJiMTBlNjVkY2VlYmJiZDc5YzNlNDpzZXNzaW9uX2lkPTJfTVg0eU1qWXdOalV5TW40eE1qY3VNQzR3TGpGLVUzVnVJRXBoYmlBeU1DQXhNRG94TURveE55QlFVMVFnTWpBeE0zNHdMamsyTURNM09YNCZjcmVhdGVfdGltZT0xMzU4NzA1NDI5JmV4cGlyZV90aW1lPTEzNjEyOTc0Mjkmcm9sZT1wdWJsaXNoZXImbm9uY2U9NDY3OTgmc2RrX3ZlcnNpb249dGItZGFzaGJvYXJkLWphdmFzY3JpcHQtdjE=';
   var client = new Dropbox.Client({
     key: "KGh2bRY1OTA=|uW+0UZq9oX+WVLvRsNCnnIcuEvgOkhOmU0vYFgzhkA==" 
   });
@@ -23,7 +23,7 @@ $(document).ready(function() {
         model: Folder
       });
 
-      var Folders = new FolderList;
+      var Folders = new FolderList();
       Folders.reset(entry_stats);
 
       var FolderView = Backbone.View.extend({
@@ -55,7 +55,7 @@ $(document).ready(function() {
                 Folders.reset(entry_stats);
               });
           }
-        },
+        }
       });
 
       var AppView = Backbone.View.extend({
@@ -75,7 +75,7 @@ $(document).ready(function() {
         }
       });
 
-      var App = new AppView;
+      var App = new AppView();
       var pusher = new Pusher('86baf974dd9fd950a9c8');
       channel = pusher.subscribe('private-together');
       var sent = false;
@@ -172,7 +172,7 @@ $(document).ready(function() {
             div.setAttribute('id', 'stream' + streams[i].steamId);
             document.body.appendChild(div);
 
-            session.subscribe(streams[i], div.id)
+            session.subscribe(streams[i], div.id);
           }
         }
       });

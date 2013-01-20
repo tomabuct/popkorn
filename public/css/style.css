@@ -56,8 +56,10 @@ img#hang {
 img#go {
   margin-left: 20px;
   height: 50px;
-  vertical-align: bottom;
+  vertical-align: -20px;
   cursor: pointer;
+  position: relative;
+  left: -40px;
 }
 
 iframe#yt_player {
@@ -66,4 +68,32 @@ iframe#yt_player {
 
 div#player_container {
   text-align: center;
+}
+
+img#sc_logo {
+  vertical-align: -15px;
+  margin-right: 14px;
+  height: 45px;
+} 
+
+img#yt_logo {
+  height: 40px;
+  vertical-align: -13px;
+  margin-right: 18px;
+}
+
+img#db_button {
+  position: relative;
+  left: -48px;
+  height: 35px;
+  vertical-align: -11px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4)
+}
+
+span#or {
+  font: 30px Gotham;
+  font-weight: 900;
+  font-style: italic;
+  opacity: 0.9;
+  color: #0f6aaa;
 }

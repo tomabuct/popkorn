@@ -60,7 +60,7 @@ get '/play' do
       :session_id => session_id,
       :short_url => short
     }
-  when /.*\.mp4/
+  when /.*\.(mp4|mov)/
     erb :other_video, :locals => {
       :url => url,
       :session_id => session_id,

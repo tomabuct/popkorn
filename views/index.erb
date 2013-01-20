@@ -7,14 +7,16 @@
   <script type="text/javascript" src="https://www.dropbox.com/static/api/1/dropbox.js" id="dropboxjs" data-app-key="01asumvjw1hu65w"></script>
   <!-- button listener -->
   <script type="text/javascript">
-$(document).ready(function() {
   function goto_view_page(url) {
-    window.location.href = '/play?url=' + escape(url || $('#video_url_box').val()) + '&session_id=' + (new Date()).getTime();
+    timestamp = new Date().getTime()
+    url = escape(url || $('#video_url_box').val())
+    window.location.href = '/play?url=' + url + '&session_id=' + timestamp
   }
-  document.getElementById("db-chooser").addEventListener(
+$(document).ready(function() {
+  /*document.getElementById("db-chooser").addEventListener(
   "DbxChooserSuccess", function(e) {
     goto_view_page(e.files[0].link)
-  }, false);
+  }, false);*/
 });
   </script>
 </head>
@@ -27,10 +29,13 @@ $(document).ready(function() {
 </div>
 <div id="url">
   <form action="javascript: goto_view_page()">
-    <input id="video_url_box" placeholder="YouTube video" type="text">
+    <img id="sc_logo" src="/images/soundcloud_logo.png">
+    <img id="yt_logo" src="/images/youtube_logo.png">
+    <input id="video_url_box" placeholder="What do you want to watch?" type="text">
+    <img src="/images/dropbox_logo.png" id="db_button">
     <img src="/images/popcorn.png" id="go" onclick="javascript: goto_view_page()">
   </form>
+  <!--<input type="dropbox-chooser" name="selected-file" id="db-chooser" data-link-type="direct"/>-->
 </div>
-<input type="dropbox-chooser" name="selected-file" id="db-chooser" data-link-type="direct"/>
 </body>
 </html>

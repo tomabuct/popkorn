@@ -1,5 +1,5 @@
-pennapps_s13
-============
+popkorn
+=======
 online at popkorn.me
 
 An app allowing friends and family to watch videos (from youtube or from

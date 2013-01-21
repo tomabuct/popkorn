@@ -1,10 +1,9 @@
 popkorn
 =======
-online at popkorn.me
+http://popkorn.me
 
-An app allowing friends and family to watch videos (from youtube or from
-anywhere online, like a family member's dropbox) and look over photos together
-(with photos stored on dropbox). Viewers watching the same shared url can video
-chatting with each other using tokbox.
+Popkorn is a web app allowing friends and family to watch videos together and view photos together (from YouTube, Dropbox or stored on the web). Viewers can also video chat with each other using tokbox. 
 
+Popkorn has been tested on Google Chrome 24.
 
+– Brought to you by Don Huang, Vibha Rao, Peter Xiao and Tom Abraham at PennApps S'13
